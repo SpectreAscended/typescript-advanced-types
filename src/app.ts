@@ -165,3 +165,23 @@ const userInputElement = document.getElementById('user-input');
 if (userInputElement) {
   (userInputElement as HTMLInputElement).value = 'Hi there!';
 }
+
+// Index types
+
+interface ErrorContainer {
+  // { email: 'Not a valid email, username: 'Must start with a capital character!' }
+  //   id: string;
+  [prop: string]: string;
+}
+// This says, I don't know the propery name.  I don't know the property count. What I do know is that the key of this object will be a string, and the value will be a string.
+
+// We can add other things to this, such as an id, if we know we'll have an id.  It must be the same type as your indexed property though.
+
+const errorBag: ErrorContainer = {
+  email: 'Not a valid Email!',
+  username: 'Must start with a capital character',
+  foo: 'bar',
+  1: 'string',
+};
+
+// Please note! We CAN add numbers as a key, because they can be converted into a string.  If we required a number as a key, we could not use a string though, because that could not be converted into a number.
