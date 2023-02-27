@@ -69,6 +69,9 @@ function printEmployeeInformation(emp: UnknownEmployee) {
 printEmployeeInformation(e1);
 printEmployeeInformation({ name: 'Doug', startDate: new Date() });
 
+// TypeGuards - The practice or approach of checking if a certain property or method exists before using it.
+// 'in' 'typeof' 'instanceof' etc
+
 class Car {
   drive() {
     console.log('Driving...');
@@ -103,3 +106,9 @@ function useVehicle(vehicle: Vehicle) {
 
 useVehicle(v1);
 useVehicle(v2);
+
+// Discriminated Unions
+
+interface Bird {
+  flyingSpeed: Number;
+}
