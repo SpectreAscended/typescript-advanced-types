@@ -142,3 +142,26 @@ function moveAnimal(animal: Animal) {
 }
 
 moveAnimal({ type: 'bird', flyingSpeed: 10 });
+
+// Type casting
+
+// Since typescript doesn't go into our HTML file it doesn't know that the ID we are accessing from the DOM is of type HTMLParagraphElement or type HTMLInputElement for example, so we can explicitly tell it that by either adding it in front of the document query in angle brackets, or using the 'as' operator at the end.
+
+// const paragraph = document.getElementById('message-output');
+
+// const userInputElement = <HTMLInputElement>(
+//   document.getElementById('user-input')!
+// );
+// const userInputElement = document.getElementById(
+//   'user-input'
+// )! as HTMLInputElement;
+
+// userInputElement.value = 'Hi there!';
+
+// alternative way, incase the input is null. the ! insures that it will always exist. but in cases where it may be null:
+
+const userInputElement = document.getElementById('user-input');
+
+if (userInputElement) {
+  (userInputElement as HTMLInputElement).value = 'Hi there!';
+}
