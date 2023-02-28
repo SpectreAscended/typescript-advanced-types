@@ -39,6 +39,10 @@ type Universal = Combinable & Numeric;
 
 // Type guards
 
+function add(a: number, b: number): number;
+function add(a: string, b: string): string;
+function add(a: string, b: number): string;
+function add(a: number, b: string): string;
 function add(a: Combinable, b: Combinable) {
   if (typeof a === 'string' || typeof b === 'string') {
     return a.toString() + b.toString();
@@ -46,66 +50,72 @@ function add(a: Combinable, b: Combinable) {
   return a + b;
 }
 
+// Function overloads.  Since our function can accept both string and number, the return value will be of string | number.  We don't necessarily want that.  So to combat that, we can use a function overload.  To do that we write the function again on top of the function we're calling, pass in the the parameters we need and the return value we expect from those parameters.
+
+const result = add('Cory', ' Pollard');
+result.split(' ');
+const result2 = add(1, 5);
+
 // Since a and b can be both number OR string, we need to be able to handle that case.  So if one of them is a string, and one is a number, we must convert them both to string to concatonate.  Otherwise they will be added mathematically.  This is a 'type guard' using typeof.
 
 // We can only use a typeof check using types JavaScript knows because these will be compiled at run time.  So we cant do like 'typeof emp === 'Employee' for example. It can't be a custom type.
 
 // Here we want to print privileges.  Typescript yells at us because emp.priviliges may not exist.  To get around this we can use  'in'. a JavaScript method to see if property 'privileges' exists within the object emp.
 
-type UnknownEmployee = Employee | Admin;
+// type UnknownEmployee = Employee | Admin;
 
-function printEmployeeInformation(emp: UnknownEmployee) {
-  console.log('Name: ' + emp.name);
+// function printEmployeeInformation(emp: UnknownEmployee) {
+//   console.log('Name: ' + emp.name);
 
-  if ('privileges' in emp) {
-    console.log('Privileges: ' + emp.privileges);
-  }
+//   if ('privileges' in emp) {
+//     console.log('Privileges: ' + emp.privileges);
+//   }
 
-  if ('startDate' in emp) {
-    console.log('Start date: ' + emp.startDate);
-  }
-}
+//   if ('startDate' in emp) {
+//     console.log('Start date: ' + emp.startDate);
+//   }
+// }
 
-printEmployeeInformation(e1);
-printEmployeeInformation({ name: 'Doug', startDate: new Date() });
+// printEmployeeInformation(e1);
+// printEmployeeInformation({ name: 'Doug', startDate: new Date() });
 
 // TypeGuards - The practice or approach of checking if a certain property or method exists before using it.
 // 'in' 'typeof' 'instanceof' etc
 
-class Car {
-  drive() {
-    console.log('Driving...');
-  }
-}
+// class Car {
+//   drive() {
+//     console.log('Driving...');
+//   }
+// }
 
-class Truck {
-  drive() {
-    console.log('Driving a truck...');
-  }
+// class Truck {
+//   drive() {
+//     console.log('Driving a truck...');
+//   }
 
-  loadCargo(amount: number) {
-    console.log('Loading cargo ... ' + amount);
-  }
-}
+//   loadCargo(amount: number) {
+//     console.log('Loading cargo ... ' + amount);
+//   }
+// }
 
-type Vehicle = Car | Truck;
+// type Vehicle = Car | Truck;
 
-const v1 = new Car();
-const v2 = new Truck();
+// const v1 = new Car();
+// const v2 = new Truck();
 
-function useVehicle(vehicle: Vehicle) {
-  vehicle.drive();
-  //   if ('loadCargo' in vehicle) {
-  //     vehicle.loadCargo(1000);
-  //   }
+// function useVehicle(vehicle: Vehicle) {
+//   vehicle.drive();
+//   //   if ('loadCargo' in vehicle) {
+//   //     vehicle.loadCargo(1000);
+//   //   }
 
-  if (vehicle instanceof Truck) {
-    vehicle.loadCargo(1000);
-  }
-}
+//   if (vehicle instanceof Truck) {
+//     vehicle.loadCargo(1000);
+//   }
+// }
 
-useVehicle(v1);
-useVehicle(v2);
+// useVehicle(v1);
+// useVehicle(v2);
 
 // Discriminated Unions
 
@@ -113,35 +123,35 @@ useVehicle(v2);
 
 // Doing this gives us autocomplete for which properties we are allowed to access which eliminates the problem of possible typos in our type checks checks.
 
-interface Bird {
-  type: 'bird';
-  flyingSpeed: number;
-}
+// interface Bird {
+//   type: 'bird';
+//   flyingSpeed: number;
+// }
 
-interface Horse {
-  type: 'horse';
-  runningSpeed: number;
-}
+// interface Horse {
+//   type: 'horse';
+//   runningSpeed: number;
+// }
 
-type Animal = Bird | Horse;
+// type Animal = Bird | Horse;
 
-function moveAnimal(animal: Animal) {
-  let speed: number;
-  //   if ('flyingSpeed' in animal) {
-  //     console.log('Moving with speed: ' + animal.flyingSpeed);
-  //   }
-  switch (animal.type) {
-    case 'bird':
-      speed = animal.flyingSpeed;
-      break;
-    case 'horse':
-      speed = animal.runningSpeed;
-      break;
-  }
-  console.log(`Moving at speed: ${speed}`);
-}
+// function moveAnimal(animal: Animal) {
+//   let speed: number;
+//   //   if ('flyingSpeed' in animal) {
+//   //     console.log('Moving with speed: ' + animal.flyingSpeed);
+//   //   }
+//   switch (animal.type) {
+//     case 'bird':
+//       speed = animal.flyingSpeed;
+//       break;
+//     case 'horse':
+//       speed = animal.runningSpeed;
+//       break;
+//   }
+//   console.log(`Moving at speed: ${speed}`);
+// }
 
-moveAnimal({ type: 'bird', flyingSpeed: 10 });
+// moveAnimal({ type: 'bird', flyingSpeed: 10 });
 
 // Type casting
 
@@ -160,28 +170,47 @@ moveAnimal({ type: 'bird', flyingSpeed: 10 });
 
 // alternative way, incase the input is null. the ! insures that it will always exist. but in cases where it may be null:
 
-const userInputElement = document.getElementById('user-input');
+// const userInputElement = document.getElementById('user-input');
 
-if (userInputElement) {
-  (userInputElement as HTMLInputElement).value = 'Hi there!';
-}
+// if (userInputElement) {
+//   (userInputElement as HTMLInputElement).value = 'Hi there!';
+// }
 
-// Index types
+// // Index types
 
-interface ErrorContainer {
-  // { email: 'Not a valid email, username: 'Must start with a capital character!' }
-  //   id: string;
-  [prop: string]: string;
-}
+// interface ErrorContainer {
+//   // { email: 'Not a valid email, username: 'Must start with a capital character!' }
+//   //   id: string;
+//   [prop: string]: string;
+// }
 // This says, I don't know the propery name.  I don't know the property count. What I do know is that the key of this object will be a string, and the value will be a string.
 
 // We can add other things to this, such as an id, if we know we'll have an id.  It must be the same type as your indexed property though.
 
-const errorBag: ErrorContainer = {
-  email: 'Not a valid Email!',
-  username: 'Must start with a capital character',
-  foo: 'bar',
-  1: 'string',
-};
+// const errorBag: ErrorContainer = {
+//   email: 'Not a valid Email!',
+//   username: 'Must start with a capital character',
+//   foo: 'bar',
+//   1: 'string',
+// };
 
 // Please note! We CAN add numbers as a key, because they can be converted into a string.  If we required a number as a key, we could not use a string though, because that could not be converted into a number.
+
+// Function overloads (see 'add' function above)
+
+// Optional chaining
+
+const fetchedUserData = {
+  id: 'u1',
+  name: 'Cory',
+  job: { title: 'CEO', description: 'My own company' },
+};
+
+console.log(fetchedUserData?.job?.title);
+
+// Nullish Coalescing operator
+
+const userInput = '';
+
+const storedData = userInput ?? 'DEFAULT';
+console.log(storedData);
